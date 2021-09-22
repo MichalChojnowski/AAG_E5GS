@@ -1,0 +1,9 @@
+data/housing.csv
+src/notebooks/explore_data.md
+data/housing.csv
+src/notebooks/explore_data.md
+data/housing.csv
+src/app.py
+src/model.py
+src/assets/
+tests/unit/test_model.py

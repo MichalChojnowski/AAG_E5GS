@@ -1,0 +1,14 @@
+pytest==5.4.2
+pytest-cov==2.8.1
+sphinx==3.0.4
+black==19.10b0
+jupyterlab==2.1.4
+pandas==1.0.5
+scikit-learn==0.23.1
+xgboost==1.0.2
+pandas==1.0.5
+scikit-learn==0.23.1
+dash==1.12.0
+plotly==4.8.1
+pytest==5.4.2
+pytest-cov==2.8.1

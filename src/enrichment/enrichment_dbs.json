@@ -1,0 +1,497 @@
+{
+    "demo": {
+        "DATASET_ID": "acs_sociodemogr_b758e778",
+        "VAR_IDS": [
+            "total_pop_3cf008b3",
+            "male_pop_449530e0",
+            "female_pop_cc328858",
+            "median_age_6bdca388",
+            "median_income_70005174",
+            "income_per_capi_8a9352e0",
+            "female_under_5_83609b74",
+            "female_10_to_14_8f429361",
+            "female_15_to_17_4473ed7c",
+            "female_18_to_19_c21ca1bb",
+            "female_20_80edc00",
+            "female_21_7f09ec96",
+            "female_22_to_24_bd7fd668",
+            "female_25_to_29_669945b",
+            "female_30_to_34_ff51f69e",
+            "female_35_to_39_d3d8a584",
+            "female_40_to_44_bad56940",
+            "female_45_to_49_965c3a5a",
+            "female_50_to_54_6f64589f",
+            "female_55_to_59_43ed0b85",
+            "female_5_to_9_f6181495",
+            "female_60_to_61_baacf830",
+            "female_62_to_64_5d591d96",
+            "female_65_to_66_76f04234",
+            "female_67_to_69_71d04e8c",
+            "female_70_to_74_1f773d60",
+            "female_75_to_79_33fe6e7a",
+            "female_80_to_84_41cf3303",
+            "female_85_and_o_d9ec6d24",
+            "male_under_5_92ce7395",
+            "male_10_to_14_585eef67",
+            "male_15_to_17_936f917a",
+            "male_18_to_19_1500ddbd",
+            "male_20_a7ec82d8",
+            "male_21_d0ebb24e",
+            "male_22_to_24_6a63aa6e",
+            "male_25_to_29_d175e85d",
+            "male_30_to_34_284d8a98",
+            "male_35_to_39_4c4d982",
+            "male_40_to_44_6dc91546",
+            "male_45_to_49_4140465c",
+            "male_50_to_54_b8782499",
+            "male_55_to_59_94f17783",
+            "male_5_to_9_59fba94e",
+            "male_60_to_61_6db08436",
+            "male_62_to_64_8a456190",
+            "male_65_to_66_a1ec3e32",
+            "male_67_to_69_a6cc328a",
+            "male_70_to_74_c86b4166",
+            "male_75_to_79_e4e2127c",
+            "male_80_to_84_96d34f05",
+            "male_85_and_ove_4aea7bf4",
+            "amerindian_pop_6f173fd6",
+            "asian_pop_8d7a8587",
+            "black_pop_a7abfad9",
+            "hispanic_pop_9f05120f",
+            "white_pop_57ba3138",
+            "other_race_pop_db5b5e9d",
+            "two_or_more_rac_1de7804c",
+            "high_school_dip_d49cd132",
+            "less_one_year_c_f59dde80",
+            "one_year_more_c_b08ac783",
+            "associates_degr_e6b12dff",
+            "bachelors_degre_a43cf693",
+            "masters_degree_bff9c40d",
+            "pop_25_years_ov_cbbf5773",
+            "aggregate_trave_b8b8de12",
+            "civilian_labor__ef34042e",
+            "commuters_16_ov_4156f25c",
+            "employed_pop_62a1c61c",
+            "unemployed_pop_8e1588e9",
+            "pop_16_over_71fca5f7",
+            "families_with_y_2ea4af81",
+            "family_househol_ccc25a10",
+            "nonfamily_house_5cd4ca9f",
+            "married_househo_c9c5757c",
+            "nonfamily_house_5cd4ca9f",
+            "households_58bf2ab1",
+            "median_income_70005174",
+            "income_per_capi_8a9352e0",
+            "income_100000_1_8703aa21",
+            "income_10000_14_e64afea4",
+            "income_125000_1_6745b581",
+            "income_150000_1_9a1a34fd",
+            "income_15000_19_f209ed3d",
+            "income_200000_o_72d6ce96",
+            "income_20000_24_3808e275",
+            "income_25000_29_2c4bf1ec",
+            "income_30000_34_c4e61405",
+            "income_35000_39_d0a5079c",
+            "income_40000_44_5ffddd96",
+            "income_45000_49_4bbece0f",
+            "income_50000_59_5179f33b",
+            "income_60000_74_40311e87",
+            "income_75000_99_2acc6cbf",
+            "income_less_100_481dce8c",
+            "housing_units_a498b304",
+            "occupied_housin_4de3220c",
+            "housing_units_r_91d3c183",
+            "dwellings_1_uni_740a9176",
+            "dwellings_1_uni_fd430868",
+            "dwellings_2_uni_fb8f6cfb",
+            "dwellings_3_to__ae5ee0a9",
+            "dwellings_5_to__20b42489",
+            "dwellings_10_to_84fc3da1",
+            "dwellings_20_to_b07d161e",
+            "dwellings_50_or_da54f887",
+            "mobile_homes_9cde5498",
+            "housing_built_2_d1894f51",
+            "housing_built_1_d2d37b8e",
+            "median_year_str_e758b95d",
+            "median_rent_c4be78cd",
+            "million_dollar__dc010fc9",
+            "mortgaged_housi_97410171",
+            "families_with_y_2ea4af81",
+            "two_parent_fami_fc01a7fe",
+            "one_parent_fami_8c9b3280",
+            "commute_less_10_4c40a847",
+            "commute_10_14_m_86ae60a1",
+            "commute_15_19_m_70a73630",
+            "commute_20_24_m_5c71c13f",
+            "commute_25_29_m_aa7897ae",
+            "commute_30_34_m_15c4a1b5",
+            "commute_35_39_m_e3cdf724",
+            "commute_40_44_m_32bf8442",
+            "commute_35_44_m_9af4da74",
+            "commute_45_59_m_62c1d967",
+            "commute_60_more_eebb42c"
+        ],
+        "VARS_TO_CONSOLIDATE": {
+            "pop_under_19": [
+                "male_under_5",
+                "male_5_to_9",
+                "male_10_to_14",
+                "male_15_to_17",
+                "male_18_to_19",
+                "female_under_5",
+                "female_5_to_9",
+                "female_10_to_14",
+                "female_15_to_17",
+                "female_18_to_19"
+            ],
+            "pop_20_to_34": [
+                "male_20",
+                "male_21",
+                "male_22_to_24",
+                "male_25_to_29",
+                "male_30_to_34",
+                "female_20",
+                "female_21",
+                "female_22_to_24",
+                "female_25_to_29",
+                "female_30_to_34"
+            ],
+            "pop_35_to_54": [
+                "male_35_to_39",
+                "male_40_to_44",
+                "male_45_to_49",
+                "male_50_to_54",
+                "female_35_to_39",
+                "female_40_to_44",
+                "female_45_to_49",
+                "female_50_to_54"
+            ],
+            "pop_55_to_84": [
+                "male_55_to_59",
+                "male_60_to_61",
+                "male_62_to_64",
+                "male_65_to_66",
+                "male_67_to_69",
+                "male_70_to_74",
+                "male_75_to_79",
+                "male_80_to_84",
+                "female_55_to_59",
+                "female_60_to_61",
+                "female_62_to_64",
+                "female_65_to_66",
+                "female_67_to_69",
+                "female_70_to_74",
+                "female_75_to_79",
+                "female_80_to_84"
+            ],
+            "pop_85_and_over": [
+                "male_85_and_over",
+                "female_85_and_over"
+            ],
+            "income_less_25000": [
+                "income_less_10000",
+                "income_10000_14999",
+                "income_15000_19999",
+                "income_20000_24999"
+            ],
+            "income_25000_49999": [
+                "income_25000_29999",
+                "income_30000_34999",
+                "income_35000_39999",
+                "income_40000_44999",
+                "income_45000_49999"
+            ],
+            "income_50000_99999": [
+                "income_50000_59999",
+                "income_60000_74999",
+                "income_75000_99999"
+            ],
+            "income_100000_199999": [
+                "income_100000_124999",
+                "income_125000_149999",
+                "income_150000_199999"
+            ],
+            "income_more_200000": [
+                "income_200000_or_more"
+            ],
+            "dwellings_1_unit": [
+                "dwellings_1_units_detached",
+                "dwellings_1_units_attached"
+            ],
+            "dwellings_2_to_4_units": [
+                "dwellings_2_units",
+                "dwellings_3_to_4_units"
+            ],
+            "dwellings_apartments": [
+                "dwellings_5_to_9_units",
+                "dwellings_10_to_19_units",
+                "dwellings_20_to_49_units",
+                "dwellings_50_or_more_units"
+            ],
+            "commute_20_less_mins": [
+                "commute_less_10_mins",
+                "commute_10_14_mins",
+                "commute_15_19_mins"
+            ],
+            "commute_20_to_40_mins": [
+                "commute_20_24_mins",
+                "commute_25_29_mins",
+                "commute_30_34_mins",
+                "commute_35_39_mins"
+            ],
+            "commute_40_to_60_mins": [
+                "commute_40_44_mins",
+                "commute_35_44_mins",
+                "commute_45_59_mins"
+            ]
+        },
+        "PERC_COLS_TO_CALC": {
+            "perc_male": [
+                "male_pop",
+                "total_pop"
+            ],
+            "perc_female": [
+                "female_pop",
+                "total_pop"
+            ],
+            "perc_pop_under_19": [
+                "pop_under_19",
+                "total_pop"
+            ],
+            "perc_pop_20_to_34": [
+                "pop_20_to_34",
+                "total_pop"
+            ],
+            "perc_pop_35_to_54": [
+                "pop_35_to_54",
+                "total_pop"
+            ],
+            "perc_pop_55_to_84": [
+                "pop_55_to_84",
+                "total_pop"
+            ],
+            "perc_pop_85_and_over": [
+                "pop_85_and_over",
+                "total_pop"
+            ],
+            "perc_income_less_25000": [
+                "income_less_25000",
+                "households"
+            ],
+            "perc_income_25000_49999": [
+                "income_25000_49999",
+                "households"
+            ],
+            "perc_income_50000_99999": [
+                "income_50000_99999",
+                "households"
+            ],
+            "perc_income_100000_199999": [
+                "income_100000_199999",
+                "households"
+            ],
+            "perc_income_more_200000": [
+                "income_more_200000",
+                "households"
+            ],
+            "mean_travel_time_to_work": [
+                "aggregate_travel_time_to_work",
+                "commuters_16_over"
+            ],
+            "perc_employed": [
+                "employed_pop",
+                "pop_16_over"
+            ],
+            "perc_unemployed": [
+                "unemployed_pop",
+                "pop_16_over"
+            ],
+            "perc_white": [
+                "white_pop",
+                "total_pop"
+            ],
+            "perc_hispanic": [
+                "hispanic_pop",
+                "total_pop"
+            ],
+            "perc_black": [
+                "black_pop",
+                "total_pop"
+            ],
+            "perc_asian": [
+                "asian_pop",
+                "total_pop"
+            ],
+            "perc_amerindian": [
+                "amerindian_pop",
+                "total_pop"
+            ],
+            "perc_two_or_more_races": [
+                "two_or_more_races_pop",
+                "total_pop"
+            ],
+            "perc_other_race": [
+                "other_race_pop",
+                "total_pop"
+            ],
+            "perc_family_hh": [
+                "family_households",
+                "households"
+            ],
+            "perc_nonfamily_hh": [
+                "nonfamily_households",
+                "households"
+            ],
+            "perc_hh_children": [
+                "families_with_young_children",
+                "households"
+            ],
+            "perc_hs_diploma": [
+                "high_school_diploma",
+                "pop_25_years_over"
+            ],
+            "perc_less_one_year_college": [
+                "less_one_year_college",
+                "pop_25_years_over"
+            ],
+            "perc_one_year_more_college": [
+                "one_year_more_college",
+                "pop_25_years_over"
+            ],
+            "perc_associates_degree": [
+                "associates_degree",
+                "pop_25_years_over"
+            ],
+            "perc_bachelors_degree": [
+                "bachelors_degree",
+                "pop_25_years_over"
+            ],
+            "perc_masters_degree": [
+                "masters_degree",
+                "pop_25_years_over"
+            ],
+            "perc_occupied_units": [
+                "occupied_housing_units",
+                "housing_units"
+            ],
+            "perc_rented_units": [
+                "housing_units_renter_occupied",
+                "housing_units"
+            ],
+            "perc_1_unit": [
+                "dwellings_1_unit",
+                "housing_units"
+            ],
+            "perc_2_4_units": [
+                "dwellings_2_to_4_units",
+                "housing_units"
+            ],
+            "perc_apartments": [
+                "dwellings_apartments",
+                "housing_units"
+            ],
+            "perc_post_2005_units": [
+                "housing_built_2005_or_later",
+                "housing_units"
+            ],
+            "perc_pre_1939_units": [
+                "housing_built_1939_or_earlier",
+                "housing_units"
+            ],
+            "perc_million_dol_units": [
+                "million_dollar_housing_units",
+                "housing_units"
+            ],
+            "perc_mortaged_units": [
+                "mortgaged_housing_units",
+                "housing_units"
+            ],
+            "perc_single_parent_fams": [
+                "one_parent_families_with_young_children",
+                "families_with_young_children"
+            ],
+            "perc_two_parent_fams": [
+                "two_parent_families_with_young_children",
+                "families_with_young_children"
+            ]
+        }
+    },
+    "bls": {
+        "DATASET_ID": "bls_labor_eea5050b",
+        "VAR_IDS": [
+            "qtrly_estabs_1024_professional_and_business_services",
+            "qtrly_estabs_61_educational_services",
+            "qtrly_estabs_1023_financial_activities",
+            "qtrly_estabs_71_arts_entertainment_and_recreation",
+            "qtrly_estabs_1026_leisure_and_hospitality",
+            "qtrly_estabs_72_accommodation_and_food_services",
+            "qtrly_estabs_10_total_all_industries",
+            "qtrly_estabs_44_45_retail_trade",
+            "avg_wkly_wage_1024_professional_and_business_services",
+            "avg_wkly_wage_61_educational_services",
+            "avg_wkly_wage_1023_financial_activities",
+            "avg_wkly_wage_71_arts_entertainment_and_recreation",
+            "avg_wkly_wage_1026_leisure_and_hospitality",
+            "avg_wkly_wage_72_accommodation_and_food_services",
+            "avg_wkly_wage_10_total_all_industries",
+            "avg_wkly_wage_44_45_retail_trade",
+            "lq_avg_wkly_wage_1024_professional_and_business_services",
+            "lq_avg_wkly_wage_61_educational_services",
+            "lq_avg_wkly_wage_1023_financial_activities",
+            "lq_avg_wkly_wage_71_arts_entertainment_and_recreation",
+            "lq_avg_wkly_wage_1026_leisure_and_hospitality",
+            "lq_avg_wkly_wage_72_accommodation_and_food_services",
+            "lq_avg_wkly_wage_10_total_all_industries",
+            "lq_avg_wkly_wage_44_45_retail_trade",
+            "lq_month3_emplvl_1024_professional_and_business_services",
+            "lq_month3_emplvl_61_educational_services",
+            "lq_month3_emplvl_1023_financial_activities",
+            "lq_month3_emplvl_71_arts_entertainment_and_recreation",
+            "lq_month3_emplvl_1026_leisure_and_hospitality",
+            "lq_month3_emplvl_72_accommodation_and_food_services",
+            "lq_month3_emplvl_10_total_all_industries",
+            "lq_month3_emplvl_44_45_retail_trade",
+            "month3_emplvl_1024_professional_and_business_services",
+            "month3_emplvl_61_educational_services",
+            "month3_emplvl_1023_financial_activities",
+            "month3_emplvl_71_arts_entertainment_and_recreation",
+            "month3_emplvl_1026_leisure_and_hospitality",
+            "month3_emplvl_72_accommodation_and_food_services",
+            "month3_emplvl_10_total_all_industries",
+            "month3_emplvl_44_45_retail_trade"
+        ],
+        "VARS_TO_CONSOLIDATE": {
+            "priority_establishments": [
+                "qtrly_estabs_1024_professional_and_business_services",
+                "qtrly_estabs_61_educational_services",
+                "qtrly_estabs_1023_financial_activities",
+                "qtrly_estabs_71_arts_entertainment_and_recreation",
+                "qtrly_estabs_1026_leisure_and_hospitality",
+                "qtrly_estabs_72_accommodation_and_food_services",
+                "qtrly_estabs_10_total_all_industries",
+                "qtrly_estabs_44_45_retail_trade"
+            ]
+        },
+        "PERC_COLS_TO_CALC": {
+            "perc_estab_retail": [
+                "qtrly_estabs_44_45_retail_trade",
+                "qtrly_estabs_10_total_all_industries"
+            ],
+            "perc_estab_food": [
+                "qtrly_estabs_72_accommodation_and_food_services",
+                "qtrly_estabs_10_total_all_industries"
+            ]
+        }
+    },
+    "poi_density": {
+        "DATASET_ID": "",
+        "VAR_IDS": "",
+        "VARS_TO_CONSOLIDATE": "",
+        "PERC_COLS_TO_CALC": {
+            "rest_per_pop": [
+                "total_count",
+                "total_pop"
+            ]
+        }
+    }
+}

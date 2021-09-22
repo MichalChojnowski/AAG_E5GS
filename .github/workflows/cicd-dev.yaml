@@ -1,0 +1,240 @@
+# A Github Actions based CI/CD pipeline to build, test, and deploy the starter
+# project to the development environment hosted on BAP Kubernetes infrastructure.
+#
+# This pipeline tracks the "develop" git branch.
+#
+# Usage instructions:
+# 1. Copy this file to [PROJECT ROOT]/.github/workflows/cicd-dev.yaml.
+# 2. Edit "cicd-dev.yaml" to set env.PROJECT_LANGUAGE to Python or R. See line no. 15.
+# 3. Commit to the "develop" git branch. This commit triggers the pipeline.
+# 4. Monitor pipeline at https://github.com/Bain/[PROJECT NAME]/actions
+# 5. View deployment details at "DEPLOYMENT DETAILS" step in the cicd-dev job. The console output contains the project URL.
+#
+name: cicd-dev
+env:
+  PROJECT_LANGUAGE: 'Python'
+  SNYK_ORG_ID: 'snyk_org_id_value'
+  SNYK_INTEGRATION_ID: 'snyk_integration_id_value'
+on:
+  push:
+    branches: [ 'develop' ]
+  pull_request:
+    branches: [ 'develop' , 'master' , 'main' ]
+jobs:
+  snyk-analysis:
+    runs-on: security
+    env:
+      SNYK_ORG_ID: SNYK_ORG_ID_VALUE
+      SNYK_INTEGRATION_ID: SNYK_GITHUB_INTEGRATION_ID_VALUE
+      VAULT_ADDR: https://vault.tools.bain.com
+      VAULT_ROLE: tsg-security-github-runner 
+      VAULT_PATH: tsg_security_default/data/appsec 
+      REPOSITORY_NAME: ${{ github.event.repository.name }}
+      REPOSITORY_OWNER: ${{ github.event.repository.owner.login }}
+    steps:
+      - name: Get vault token
+        id: get-vault-token
+        run: |
+          VAULT_TOKEN=$(vault login -format=json -no-store -method=aws role=${{env.VAULT_ROLE}} | jq -r '.auth.client_token')
+          echo "::add-mask::$VAULT_TOKEN" 
+          echo "::set-output name=VAULT_TOKEN::$VAULT_TOKEN"
+      - name: Get vault secrets
+        id: get-vault-secrets 
+        uses: hashicorp/vault-action@v2.0.1
+        with:
+          exportEnv: false
+          url: ${{env.VAULT_ADDR}}
+          token: ${{steps.get-vault-token.outputs.VAULT_TOKEN}}
+          secrets: |
+              ${{env.VAULT_PATH}} snyk_token | SNYK_TOKEN ;
+              ${{env.VAULT_PATH}} bain_issues_token | SNYK_GITHUB_INTEGRATION_TOKEN
+      - uses: actions/checkout@v2
+        with:
+          repository: bain/tsg-sae-powershell-snyk-automation
+          ref: main
+          token: ${{steps.get-vault-secrets.outputs.SNYK_GITHUB_INTEGRATION_TOKEN}}
+      - name: Ensure Snyk project is imported
+        if: always()
+        run: |
+          pwsh $GITHUB_WORKSPACE/scripts/Set-SnykProject.ps1 -snykApiKey ${{steps.get-vault-secrets.outputs.SNYK_TOKEN}} -snykOrgId $SNYK_ORG_ID -integrationId $SNYK_INTEGRATION_ID -repositoryName $REPOSITORY_NAME -repositoryOwner $REPOSITORY_OWNER -branchName 'master'
+      - name: Specify Python version
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+            python -m pip install --upgrade pip
+            python -m pip install -r requirements.txt
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/python@master
+        env:
+          SNYK_TOKEN: ${{steps.get-vault-secrets.outputs.SNYK_TOKEN}}
+        with:
+          json: true
+      - name: Upload Snyk issues as artifact
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: snyk-issues
+          path: snyk.json   
+      - name: Copy snyk.json file
+        if: always()
+        run: |
+          cp $GITHUB_WORKSPACE/snyk.json ~/snyk.json -f
+      - uses: actions/checkout@v2
+        if: always()
+        with:
+          repository: bain/tsg-sae-powershell-snyk-automation
+          ref: main
+          token:  ${{steps.get-vault-secrets.outputs.SNYK_GITHUB_INTEGRATION_TOKEN}}
+      - name: Create GitHub issues
+        if: always()
+        run: |
+          pwsh $GITHUB_WORKSPACE/scripts/Set-SnykGitHubIssues.ps1 -pathToSnykIssues ~/snyk.json -gitHubToken ${{steps.get-vault-secrets.outputs.SNYK_GITHUB_INTEGRATION_TOKEN}} -repositoryOwner $REPOSITORY_OWNER -repositoryName $REPOSITORY_NAME -snykApiKey ${{steps.get-vault-secrets.outputs.SNYK_TOKEN}} -snykOrgId $SNYK_ORG_ID
+      - name: Remove snyk.json file
+        if: always()
+        run: |
+          rm ~/snyk.json -f
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate project language
+        if: ${{ env.PROJECT_LANGUAGE != 'Python' && env.PROJECT_LANGUAGE != 'R' }}
+        run: |
+          echo "env.PROJECT_LANGUAGE must be set to Python or R. It is currently set to $PROJECT_LANGUAGE."
+          exit 1
+      - name: Validate secrets
+        env:
+          STARTER_PROJECT_ECR_ACCESS_AWS_ACCESS_KEY_ID: ${{ secrets.STARTER_PROJECT_ECR_ACCESS_AWS_ACCESS_KEY_ID }}
+          STARTER_PROJECT_ECR_ACCESS_AWS_SECRET_ACCESS_KEY: ${{ secrets.STARTER_PROJECT_ECR_ACCESS_AWS_SECRET_ACCESS_KEY }}
+          STARTER_PROJECT_HELM_REPO_USERNAME: ${{ secrets.STARTER_PROJECT_HELM_REPO_USERNAME }}
+          STARTER_PROJECT_HELM_REPO_PASSWORD: ${{ secrets.STARTER_PROJECT_HELM_REPO_PASSWORD }}
+          STARTER_PROJECT_HELM_REPO_BAIN_CA_CERT: ${{ secrets.STARTER_PROJECT_HELM_REPO_BAIN_CA_CERT }}
+          STARTER_PROJECT_KUBECONFIG: ${{ secrets.STARTER_PROJECT_KUBECONFIG }}
+        run: |
+          echo '[IMPORTANT] Please contact TSGInfrastructureOperationsSupportRequests@bain.com if any of the STARTER_PROJECT_* variables are unset.'
+          echo '[IMPORTANT] Request TSG to allow this GitHub project to access all STARTER_PROJECT_* Github organization secrets.'
+          if [ -z ${STARTER_PROJECT_ECR_ACCESS_AWS_ACCESS_KEY_ID} ]; then echo "- STARTER_PROJECT_ECR_ACCESS_AWS_ACCESS_KEY_ID is unset" && exit 1 ; fi
+          if [ -z ${STARTER_PROJECT_ECR_ACCESS_AWS_SECRET_ACCESS_KEY} ]; then echo "- STARTER_PROJECT_ECR_ACCESS_AWS_SECRET_ACCESS_KEY is unset" && exit 1 ; fi
+          if [ -z ${STARTER_PROJECT_HELM_REPO_USERNAME} ]; then echo "- STARTER_PROJECT_HELM_REPO_USERNAME is unset" && exit 1 ; fi
+          if [ -z ${STARTER_PROJECT_HELM_REPO_PASSWORD} ]; then echo "- STARTER_PROJECT_HELM_REPO_PASSWORD is unset" && exit 1 ; fi
+          if [ -z ${STARTER_PROJECT_HELM_REPO_BAIN_CA_CERT} ]; then echo "- STARTER_PROJECT_HELM_REPO_BAIN_CA_CERT is unset" && exit 1 ; fi
+          if [ -z ${STARTER_PROJECT_KUBECONFIG} ]; then echo "- STARTER_PROJECT_KUBECONFIG is unset" && exit 1 ; fi
+      - name: Parse project name
+        run: |
+          PROJECT_NAME=`basename $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]'`
+          echo "PROJECT_NAME=$PROJECT_NAME" >> $GITHUB_ENV
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.STARTER_PROJECT_ECR_ACCESS_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.STARTER_PROJECT_ECR_ACCESS_AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Create ECR repository
+        run: |
+          aws ecr describe-repositories --repository-names $ECR_REPO_NAME || \
+          aws ecr create-repository --repository-name $ECR_REPO_NAME
+        env:
+          ECR_REPO_NAME: globeng-starter-project-${{ env.PROJECT_NAME }}
+      - name: Login to ECR
+        uses: docker/login-action@v1
+        with:
+          registry: 182581879643.dkr.ecr.us-east-1.amazonaws.com
+      - name: Build and test
+        uses: docker/build-push-action@v2
+        with:
+          target: test
+          push: false
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+      - name: Push image
+        uses: docker/build-push-action@v2
+        with:
+          target: main
+          push: true
+          tags: 182581879643.dkr.ecr.us-east-1.amazonaws.com/globeng-starter-project-${{ env.PROJECT_NAME }}:${{ github.sha }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+  deploy:
+    needs: build
+    runs-on: [ self-hosted, linux, x64, bap-builder ]
+    steps:
+      - name: Parse project name
+        run: |
+          PROJECT_NAME=`basename $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]'`
+          echo "PROJECT_NAME=$PROJECT_NAME" >> $GITHUB_ENV
+      - name: Install helm
+        run: |
+          wget -q https://get.helm.sh/helm-v3.4.0-linux-amd64.tar.gz
+          tar -zxvf helm-v3.4.0-linux-amd64.tar.gz
+          mkdir -p $GITHUB_WORKSPACE/bin
+          mv linux-amd64/helm $GITHUB_WORKSPACE/bin/
+          echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
+      - name: Add helm repository
+        env:
+          BAIN_CA_CERT: ${{ secrets.STARTER_PROJECT_HELM_REPO_BAIN_CA_CERT }}
+        run: |
+          echo "$BAIN_CA_CERT" > $GITHUB_WORKSPACE/bain.crt
+          helm repo remove bain || true
+          helm repo add bain https://chartmuseum.bap.aagtools.bain.com \
+            --username ${{ secrets.STARTER_PROJECT_HELM_REPO_USERNAME }} \
+            --password ${{ secrets.STARTER_PROJECT_HELM_REPO_PASSWORD }} \
+            --ca-file $GITHUB_WORKSPACE/bain.crt
+          helm repo list
+          helm repo update
+      - name: Create kubeconfig
+        env:
+          KUBECONFIG: ${{ secrets.STARTER_PROJECT_KUBECONFIG }}
+        run: |
+          echo $KUBECONFIG | base64 --decode > $GITHUB_WORKSPACE/.kubeconfig
+          chmod 700 $GITHUB_WORKSPACE/.kubeconfig
+      - name: Get helm chart name
+        id: get-helm-chart
+        run: |
+          echo """
+            if [ "$PROJECT_LANGUAGE" == "Python" ]; then
+              echo '::set-output name=CHART_NAME::datascience-python-mvp'
+            elif [ "$PROJECT_LANGUAGE" == "R" ]; then
+              echo '::set-output name=CHART_NAME::datascience-r-mvp'
+            else
+              echo "Unsupported language"
+              exit 1
+            fi
+          """ > get-chart.sh
+          chmod +x get-chart.sh
+          ./get-chart.sh
+      - name: Helm upgrade
+        run: |
+          export KUBECONFIG=$GITHUB_WORKSPACE/.kubeconfig
+          echo """
+            image:
+              repository: 182581879643.dkr.ecr.us-east-1.amazonaws.com/globeng-starter-project-${{ env.PROJECT_NAME }}
+              tag: ${{ github.sha }}
+            ingress:
+              enabled: true
+              hosts:
+              - host: ${{ env.PROJECT_NAME }}.bap.aagdev.bain.com
+                paths: ['/']
+          """ > values.yaml
+          helm upgrade \
+            ${{ env.PROJECT_NAME }} bain/${{ steps.get-helm-chart.outputs.CHART_NAME }} \
+            --install \
+            --values values.yaml \
+            --namespace starter-projects \
+            --kube-context dev \
+            --wait
+      - name: DEPLOYMENT DETAILS
+        run: |
+          echo "Project is deployed at https://${{ env.PROJECT_NAME }}.bap.aagdev.bain.com"
